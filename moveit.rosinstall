@@ -21,6 +21,6 @@
     uri: https://github.com/ros-planning/moveit_visual_tools.git
     version: master
 - git:
-    local-name: moveit_tutorials
-    uri: https://github.com/ros-planning/moveit_tutorials.git
+    local-name: vrep_jaco
+    uri: https://github.com/TMmichi/vrep_jaco.git
     version: master
