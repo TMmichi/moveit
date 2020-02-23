@@ -723,22 +723,28 @@ public:
   {
     if (!move_action_client_)
     {
+      ROS_INFO_STREAM_NAMED("move_group_interface", "No move action client");
       return MoveItErrorCode(moveit_msgs::MoveItErrorCodes::FAILURE);
     }
     if (!move_action_client_->isServerConnected())
     {
+      ROS_INFO_STREAM_NAMED("move_group_interface", "cannot connect to move action server");
       return MoveItErrorCode(moveit_msgs::MoveItErrorCodes::FAILURE);
     }
 
     moveit_msgs::MoveGroupGoal goal;
+    ROS_INFO_STREAM_NAMED("move_group_interface", "goal construct");
     constructGoal(goal);
+    ROS_INFO_STREAM_NAMED("move_group_interface", "goal constructed");
     goal.planning_options.plan_only = true;
     goal.planning_options.look_around = false;
     goal.planning_options.replan = false;
     goal.planning_options.planning_scene_diff.is_diff = true;
     goal.planning_options.planning_scene_diff.robot_state.is_diff = true;
 
+    ROS_INFO_STREAM_NAMED("move_group_interface", "goal sending");
     move_action_client_->sendGoal(goal);
+    ROS_INFO_STREAM_NAMED("move_group_interface", "goal sended");
     if (!move_action_client_->waitForResult())
     {
       ROS_INFO_STREAM_NAMED("move_group_interface", "MoveGroup action returned early");
