@@ -751,9 +751,13 @@ public:
     }
     if (move_action_client_->getState() == actionlib::SimpleClientGoalState::SUCCEEDED)
     {
+      printf("1");
       plan.trajectory_ = move_action_client_->getResult()->planned_trajectory;
+      printf("2");
       plan.start_state_ = move_action_client_->getResult()->trajectory_start;
+      printf("3");
       plan.planning_time_ = move_action_client_->getResult()->planning_time;
+      printf("4");
       return MoveItErrorCode(move_action_client_->getResult()->error_code);
     }
     else
