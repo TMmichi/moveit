@@ -231,7 +231,7 @@ ompl_interface::PlanningContextManager::PlanningContextManager(robot_model::Robo
   , max_goal_sampling_attempts_(1000)
   , max_planning_threads_(4)
   , max_solution_segment_length_(0.0)
-  , minimum_waypoint_count_(2)
+  , minimum_waypoint_count_(10)
 {
   cached_contexts_.reset(new CachedContexts());
   registerDefaultPlanners();
