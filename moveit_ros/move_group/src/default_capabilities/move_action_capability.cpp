@@ -62,15 +62,21 @@ void MoveGroupMoveAction::initialize()
 
 void MoveGroupMoveAction::executeMoveCallback(const moveit_msgs::MoveGroupGoalConstPtr& goal)
 {
+  ROS_INFO_STREAM_NAMED("","executeMoveCB 0");
   setMoveState(PLANNING);
+  ROS_INFO_STREAM_NAMED("","executeMoveCB 1");
   // before we start planning, ensure that we have the latest robot state received...
   context_->planning_scene_monitor_->waitForCurrentRobotState(ros::Time::now());
+  ROS_INFO_STREAM_NAMED("","executeMoveCB 2");
   context_->planning_scene_monitor_->updateFrameTransforms();
+  ROS_INFO_STREAM_NAMED("","executeMoveCB 3");
 
   moveit_msgs::MoveGroupResult action_res;
   if (goal->planning_options.plan_only || !context_->allow_trajectory_execution_)
   {
+    ROS_INFO_STREAM_NAMED("","executeMoveCB 4");
     if (!goal->planning_options.plan_only)
+    ROS_INFO_STREAM_NAMED("","executeMoveCB 5");
       ROS_WARN_NAMED(getName(), "This instance of MoveGroup is not allowed to execute trajectories "
                                 "but the goal request has plan_only set to false. "
                                 "Only a motion plan will be computed anyway.");
@@ -78,6 +84,7 @@ void MoveGroupMoveAction::executeMoveCallback(const moveit_msgs::MoveGroupGoalCo
   }
   else
     executeMoveCallbackPlanAndExecute(goal, action_res);
+  ROS_INFO_STREAM_NAMED("","executeMoveCB 6");
 
   bool planned_trajectory_empty = trajectory_processing::isTrajectoryEmpty(action_res.planned_trajectory);
   std::string response =

@@ -990,6 +990,8 @@ public:
   void setTrajectoryConstraints(const moveit_msgs::TrajectoryConstraints& constraint);
   void clearTrajectoryConstraints();
 
+  void clientReset();
+
   /**@}*/
 
 protected:

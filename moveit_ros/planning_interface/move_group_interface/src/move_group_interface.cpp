@@ -733,35 +733,36 @@ public:
     }
 
     moveit_msgs::MoveGroupGoal goal;
-    ROS_INFO_STREAM_NAMED("move_group_interface", "goal construct");
+    ROS_INFO_STREAM_NAMED("", "goal construct");
     constructGoal(goal);
-    ROS_INFO_STREAM_NAMED("move_group_interface", "goal constructed");
+    ROS_INFO_STREAM_NAMED("", "goal constructed");
     goal.planning_options.plan_only = true;
     goal.planning_options.look_around = false;
     goal.planning_options.replan = false;
     goal.planning_options.planning_scene_diff.is_diff = true;
     goal.planning_options.planning_scene_diff.robot_state.is_diff = true;
 
-    ROS_INFO_STREAM_NAMED("move_group_interface", "goal sending");
+    ROS_INFO_STREAM_NAMED("", "goal sending");
     move_action_client_->sendGoal(goal);
-    ROS_INFO_STREAM_NAMED("move_group_interface", "goal sended");
+    ROS_INFO_STREAM_NAMED("", "goal sended");
     if (!move_action_client_->waitForResult())
     {
       ROS_INFO_STREAM_NAMED("move_group_interface", "MoveGroup action returned early");
     }
     if (move_action_client_->getState() == actionlib::SimpleClientGoalState::SUCCEEDED)
     {
-      ROS_DEBUG_NAMED("move_group_interface", "1");
+      ROS_INFO_STREAM_NAMED("", "1");
       plan.trajectory_ = move_action_client_->getResult()->planned_trajectory;
-      ROS_DEBUG_NAMED("move_group_interface", "2");
+      ROS_INFO_STREAM_NAMED("", "2");
       plan.start_state_ = move_action_client_->getResult()->trajectory_start;
-      ROS_DEBUG_NAMED("move_group_interface", "3");
+      ROS_INFO_STREAM_NAMED("", "3");
       plan.planning_time_ = move_action_client_->getResult()->planning_time;
-      ROS_DEBUG_NAMED("move_group_interface", "4");
+      ROS_INFO_STREAM_NAMED("", "4");
       return MoveItErrorCode(move_action_client_->getResult()->error_code);
     }
     else
     {
+      ROS_INFO_STREAM_NAMED("","Failed 1");
       ROS_WARN_STREAM_NAMED("move_group_interface", "Fail: " << move_action_client_->getState().toString() << ": "
                                                              << move_action_client_->getState().getText());
       return MoveItErrorCode(move_action_client_->getResult()->error_code);
@@ -1211,6 +1212,10 @@ public:
     workspace_parameters_.max_corner.x = maxx;
     workspace_parameters_.max_corner.y = maxy;
     workspace_parameters_.max_corner.z = maxz;
+  }
+
+  void clientReset(){
+    move_action_client_->cancelGoalsAtAndBeforeTime(ros::Time::now());
   }
 
 private:
@@ -2203,6 +2208,11 @@ bool MoveGroupInterface::detachObject(const std::string& name)
 void MoveGroupInterface::constructMotionPlanRequest(moveit_msgs::MotionPlanRequest& goal_out)
 {
   impl_->constructMotionPlanRequest(goal_out);
+}
+
+void MoveGroupInterface::clientReset()
+{
+  impl_->clientReset();
 }
 
 }  // namespace planning_interface
