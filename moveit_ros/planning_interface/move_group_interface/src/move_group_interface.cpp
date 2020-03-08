@@ -749,7 +749,7 @@ public:
     {
       ROS_INFO_STREAM_NAMED("move_group_interface", "MoveGroup action returned early");
     }
-    actionlib::SimpleClientGoalState state_temp = move_action_client->getState();
+    actionlib::SimpleClientGoalState state_temp = move_action_client_->getState();
     ROS_INFO_STREAM_NAMED("", "Get State");
     //if (move_action_client_->getState() == actionlib::SimpleClientGoalState::SUCCEEDED)
     if (state_temp == actionlib::SimpleClientGoalState::SUCCEEDED)
