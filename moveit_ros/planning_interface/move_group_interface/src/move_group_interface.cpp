@@ -1215,6 +1215,7 @@ public:
   }
 
   void clientReset(){
+    ROS_INFO_STREAM_NAMED("","reset 0");
     move_action_client_->cancelGoalsAtAndBeforeTime(ros::Time::now());
   }
 
