@@ -241,6 +241,7 @@ void MoveGroupMoveAction::startMoveLookCallback()
 
 void MoveGroupMoveAction::preemptMoveCallback()
 {
+  ROS_INFO_STREAM_NAMED("","In MoveActionServer: PreemptCB");
   preempt_requested_ = true;
   context_->plan_execution_->stop();
 }
