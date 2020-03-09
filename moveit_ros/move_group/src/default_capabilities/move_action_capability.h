@@ -40,6 +40,8 @@
 #include <actionlib/server/simple_action_server.h>
 #include <moveit_msgs/MoveGroupAction.h>
 #include <memory>
+#include <ros/ros.h>
+#include <std_msgs/Int8.h>
 
 namespace move_group
 {
@@ -51,6 +53,7 @@ public:
   void initialize() override;
 
 private:
+  void keyCallback(const std_msgs::Int8::ConstPtr &msg);
   void executeMoveCallback(const moveit_msgs::MoveGroupGoalConstPtr& goal);
   void executeMoveCallbackPlanAndExecute(const moveit_msgs::MoveGroupGoalConstPtr& goal,
                                          moveit_msgs::MoveGroupResult& action_res);
@@ -68,5 +71,7 @@ private:
 
   MoveGroupState move_state_;
   bool preempt_requested_;
+
+  ros::Subscriber key_sub_;
 };
 }

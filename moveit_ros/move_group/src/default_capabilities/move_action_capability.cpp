@@ -58,7 +58,17 @@ void MoveGroupMoveAction::initialize()
       root_node_handle_, MOVE_ACTION, boost::bind(&MoveGroupMoveAction::executeMoveCallback, this, _1), false));
   move_action_server_->registerPreemptCallback(boost::bind(&MoveGroupMoveAction::preemptMoveCallback, this));
   move_action_server_->start();
+  key_sub_ = root_node_handle_.subscribe("key_input", 10, &MoveGroupMoveAction::keyCallback, this);
 }
+
+
+void MoveGroupMoveAction::keyCallback(const std_msgs::Int8::ConstPtr &msg)
+{
+  if (msg->data == 'r')
+  {
+    move_action_server_->resetCall();
+  }
+
 
 void MoveGroupMoveAction::executeMoveCallback(const moveit_msgs::MoveGroupGoalConstPtr& goal)
 {
