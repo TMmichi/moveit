@@ -733,39 +733,28 @@ public:
     }
 
     moveit_msgs::MoveGroupGoal goal;
-    ROS_INFO_STREAM_NAMED("", "goal construct");
-    constructGoal(goal);
-    ROS_INFO_STREAM_NAMED("", "goal constructed");
     goal.planning_options.plan_only = true;
     goal.planning_options.look_around = false;
     goal.planning_options.replan = false;
     goal.planning_options.planning_scene_diff.is_diff = true;
     goal.planning_options.planning_scene_diff.robot_state.is_diff = true;
 
-    ROS_INFO_STREAM_NAMED("", "goal sending");
     move_action_client_->sendGoal(goal);
-    ROS_INFO_STREAM_NAMED("", "goal sended");
     if (!move_action_client_->waitForResult())
     {
       ROS_INFO_STREAM_NAMED("move_group_interface", "MoveGroup action returned early");
     }
     actionlib::SimpleClientGoalState state_temp = move_action_client_->getState();
-    ROS_INFO_STREAM_NAMED("", "Get State");
     //if (move_action_client_->getState() == actionlib::SimpleClientGoalState::SUCCEEDED)
     if (state_temp == actionlib::SimpleClientGoalState::SUCCEEDED)
     {
-      ROS_INFO_STREAM_NAMED("", "1");
       plan.trajectory_ = move_action_client_->getResult()->planned_trajectory;
-      ROS_INFO_STREAM_NAMED("", "2");
       plan.start_state_ = move_action_client_->getResult()->trajectory_start;
-      ROS_INFO_STREAM_NAMED("", "3");
       plan.planning_time_ = move_action_client_->getResult()->planning_time;
-      ROS_INFO_STREAM_NAMED("", "4");
       return MoveItErrorCode(move_action_client_->getResult()->error_code);
     }
     else
     {
-      ROS_INFO_STREAM_NAMED("","Failed 1");
       ROS_WARN_STREAM_NAMED("move_group_interface", "Fail: " << move_action_client_->getState().toString() << ": "
                                                              << move_action_client_->getState().getText());
       return MoveItErrorCode(move_action_client_->getResult()->error_code);
