@@ -733,6 +733,7 @@ public:
     }
 
     moveit_msgs::MoveGroupGoal goal;
+    constructGoal(goal);
     goal.planning_options.plan_only = true;
     goal.planning_options.look_around = false;
     goal.planning_options.replan = false;
