@@ -723,8 +723,8 @@ public:
 
   /** \brief Compute a motion plan that takes the group declared in the constructor from the current state to the
      specified
-      target. No execution is performed. The resulting plan is stored in \e plan*/
-  MoveItErrorCode plan(Plan& plan);
+      target. No execution is performed. The resulting plan is stored in \e plan. */
+  MoveItErrorCode plan(Plan& plan, float timeout = 5);
 
   /** \brief Given a \e plan, execute it without waiting for completion. Return true on success. */
   MoveItErrorCode asyncExecute(const Plan& plan);

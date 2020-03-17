@@ -719,7 +719,7 @@ public:
     return pick(constructPickupGoal(object.id, std::move(response.grasps), plan_only));
   }
 
-  MoveItErrorCode plan(Plan& plan)
+  MoveItErrorCode plan(Plan& plan, float timeout)
   {
     if (!move_action_client_)
     {
@@ -741,7 +741,7 @@ public:
     goal.planning_options.planning_scene_diff.robot_state.is_diff = true;
 
     move_action_client_->sendGoal(goal);
-    if (!move_action_client_->waitForResult())
+    if (!move_action_client_->waitForResult(ros::Duration(timeout)))
     {
       ROS_INFO_STREAM_NAMED("move_group_interface", "MoveGroup action returned early");
     }
@@ -1431,9 +1431,9 @@ MoveItErrorCode MoveGroupInterface::execute(const Plan& plan)
   return impl_->execute(plan, true);
 }
 
-MoveItErrorCode MoveGroupInterface::plan(Plan& plan)
+MoveItErrorCode MoveGroupInterface::plan(Plan& plan, float timeout)
 {
-  return impl_->plan(plan);
+  return impl_->plan(plan, timeout);
 }
 
 moveit_msgs::PickupGoal MoveGroupInterface::constructPickupGoal(const std::string& object,
