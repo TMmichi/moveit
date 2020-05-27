@@ -54,20 +54,19 @@ MoveGroupMoveAction::MoveGroupMoveAction()
 void MoveGroupMoveAction::initialize()
 {
   // start the move action server
+  ROS_INFO_NAMED(getName(), "MoveGroupMovAction Server Init");
   move_action_server_.reset(new actionlib::SimpleActionServer<moveit_msgs::MoveGroupAction>(
       root_node_handle_, MOVE_ACTION, boost::bind(&MoveGroupMoveAction::executeMoveCallback, this, _1), false));
   move_action_server_->registerPreemptCallback(boost::bind(&MoveGroupMoveAction::preemptMoveCallback, this));
   move_action_server_->start();
   key_sub_ = root_node_handle_.subscribe("reset_key", 10, &MoveGroupMoveAction::keyCallback, this);
+  ROS_INFO_NAMED(getName(), "MoveGroupMovAction Server Init Finished");
 }
 
 
 void MoveGroupMoveAction::keyCallback(const std_msgs::Int8::ConstPtr &msg)
 {
-  if (msg->data == 'r')
-  {
-    move_action_server_->resetCall();
-  }
+  move_action_server_->resetCall();
 }
 
 void MoveGroupMoveAction::executeMoveCallback(const moveit_msgs::MoveGroupGoalConstPtr& goal)
@@ -85,6 +84,7 @@ void MoveGroupMoveAction::executeMoveCallback(const moveit_msgs::MoveGroupGoalCo
       ROS_WARN_NAMED(getName(), "This instance of MoveGroup is not allowed to execute trajectories "
                                 "but the goal request has plan_only set to false. "
                                 "Only a motion plan will be computed anyway.");
+    ROS_INFO_NAMED("","Plan Only");
     executeMoveCallbackPlanOnly(goal, action_res);
   }
   else
@@ -247,7 +247,9 @@ void MoveGroupMoveAction::preemptMoveCallback()
 {
   ROS_INFO_STREAM_NAMED("","In MoveActionServer: PreemptCB");
   preempt_requested_ = true;
+  ROS_INFO_STREAM_NAMED("","Calling Stop");
   context_->plan_execution_->stop();
+  ROS_INFO_STREAM_NAMED("","Stop Called");
 }
 
 void MoveGroupMoveAction::setMoveState(MoveGroupState state)
