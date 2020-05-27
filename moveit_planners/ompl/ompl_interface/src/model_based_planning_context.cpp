@@ -355,7 +355,7 @@ void ompl_interface::ModelBasedPlanningContext::useConfig()
         std::bind(spec_.planner_selector_(type), std::placeholders::_1, planner_name, std::cref(spec_)));
     ROS_INFO_NAMED("model_based_planning_context",
                    "Planner configuration '%s' will use planner '%s'. "
-                   "Additional configuration parameters will be set when the planner is constructed.",
+                   "",
                    name_.c_str(), type.c_str());
   }
 

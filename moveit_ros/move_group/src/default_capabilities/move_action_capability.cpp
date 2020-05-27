@@ -84,7 +84,6 @@ void MoveGroupMoveAction::executeMoveCallback(const moveit_msgs::MoveGroupGoalCo
       ROS_WARN_NAMED(getName(), "This instance of MoveGroup is not allowed to execute trajectories "
                                 "but the goal request has plan_only set to false. "
                                 "Only a motion plan will be computed anyway.");
-    ROS_INFO_NAMED("","Plan Only");
     executeMoveCallbackPlanOnly(goal, action_res);
   }
   else

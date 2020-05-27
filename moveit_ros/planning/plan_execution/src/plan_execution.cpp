@@ -100,7 +100,9 @@ plan_execution::PlanExecution::~PlanExecution()
 
 void plan_execution::PlanExecution::stop()
 {
+  ROS_INFO_STREAM_NAMED("","Calling Stop - in plan_execution");
   preempt_requested_ = true;
+  ROS_INFO_STREAM_NAMED("","Calling Stop - preempt_requested turned to true");
 }
 
 std::string plan_execution::PlanExecution::getErrorCodeString(const moveit_msgs::MoveItErrorCodes& error_code)
